@@ -9,7 +9,15 @@ class RestartDocker : IRestartDocker {
 
         println("=> Pull image...")
         Thread.sleep(1000)
-        BashUtils.executeCommand("docker-compose pull") { println(it) }
+        val result = BashUtils.executeCommand("docker-compose pull") { println(it) }
+
+        if (result.contains("done")) {
+            println("Pulling done!")
+        } else {
+            println("Error pulling. ABORT. Output was:")
+            println(result)
+            return;
+        }
 
         println("")
         println("=> Starting docker compose")
